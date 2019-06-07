@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: ~/ticketapp-backend/
+hooks:
+  ApplicationStart:
+    - location: deployment-scripts/start.sh
+      timeout: 300
+      runas: root
+  ApplicationStop:
+    - location: deployment-scripts/stop.sh
+      timeout: 300
+      runas: root
