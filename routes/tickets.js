@@ -8,7 +8,7 @@ var Zendesk = require('zendesk-node-api');
 var zendesk = new Zendesk({
   url: 'https://bbergstrum.zendesk.com',
   email: 'bbergstrum@hotmail.com',
-  token: process.env.ZENDESK_TOKEN
+  token: process.env.ZENDESK_TOKEN 
 });
 
 /* GET landing page */
@@ -23,7 +23,9 @@ router.get('/tickets', function (req, res) {
   zendesk.tickets.list().then(function (tickets) {
     // return all tickets in JSON
     res.end(JSON.stringify(tickets));
-  }).catch(console.error);
+  }).catch(function (error) {
+    console.error(error);
+  });
 });
 
 // GET single ticket
@@ -49,8 +51,23 @@ router.get('/ticketsByPage/:pageId', function (req, res) {
   //grab all tickets from Zendesk API
   zendesk.tickets.list().then(function (tickets) {
     // return all tickets in JSON
+    if (tickets === undefined || tickets === null) {
+      var errorString = JSON.stringify({'error':'Zendesk API request failed'});
+      //handle receieving no JSON
+      console.log('Error: request to Zendesk API unsuccessful');
+      //respond with bad request and error string
+      // return correct MIME type: JSON
+      res.writeHead(400, errorString, {'content-type': 'application/json'});
+      res.end(errorString);
+      return;
+    }
     res.end(JSON.stringify(tickets.slice(firstIndex, lastIndex)));
-  }).catch(console.error);
+  }).catch(function (error) {
+    //handle API unavailable
+    console.error(error);
+  });
 });
+
+
 
 module.exports = router;
