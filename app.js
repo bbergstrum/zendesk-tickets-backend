@@ -1,9 +1,10 @@
+// dependencies
 var createError = require('http-errors');
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
-var ticketsRouter = require('./routes/tickets');
+var ticketsRouter = require('./routes/router');
 var app = express();
 
 // view engine setup
@@ -27,7 +28,10 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({
+    message: err.message,
+    error: err
+  });
 });
 
 module.exports = app;
