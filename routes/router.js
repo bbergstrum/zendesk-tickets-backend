@@ -16,6 +16,13 @@ router.get('/ticket/:ticketId', function (req, res) {
   tickets.singleTicket(ticketId, res);
 });
 
+// GET total amount of tickets
+router.get('/tickets/total', function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  var tickets = new Tickets();
+  tickets.totalTickets(res);
+});
+
 // GET tickets per page
 router.get('/ticketsByPage/:pageId', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
