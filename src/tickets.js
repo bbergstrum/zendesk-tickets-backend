@@ -1,11 +1,10 @@
-
 // require node zendesk api
 var Zendesk = require('zendesk-node-api');
 
 // zendesk api instance
 var zendesk = new Zendesk({
-    url: 'https://bbergstrum.zendesk.com',
-    email: 'bbergstrum@hotmail.com',
+    url: process.env.ZENDESK_URL,
+    email: process.env.ZENDESK_EMAIL,
     token: process.env.ZENDESK_TOKEN
 });
 
